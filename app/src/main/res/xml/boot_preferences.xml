@@ -1,0 +1,20 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        app:defaultValue="true"
+        app:key="welcome"
+        app:summaryOff="@string/EnterDirectlySummaryOff"
+        app:summaryOn="@string/EnterDirectlySummaryOn"
+        app:title="@string/EnterDirectlyTitle"
+        app:useSimpleSummaryProvider="true" />
+
+    <ListPreference
+        app:defaultValue="5"
+        app:dependency="welcome"
+        app:entries="@array/photo_show_time_entries"
+        app:entryValues="@array/photo_show_time_values"
+        app:key="show_time"
+        app:title="@string/PhotoShowTimeTitle"
+        app:useSimpleSummaryProvider="true" />
+
+</PreferenceScreen>

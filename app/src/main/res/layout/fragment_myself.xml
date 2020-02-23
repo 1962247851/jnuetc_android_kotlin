@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jn.mjz.aiot.jnuetc.kotlin.view.custom.ThemedSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/srl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="?actionBarSize">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/mcv_myself_timer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="@string/TimerTitle"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout_timer_day"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:visibility="gone">
+
+                            <com.robinhood.ticker.TickerView
+                                android:id="@+id/tickerView_timer_day"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="25sp"
+                                app:ticker_defaultCharacterList="number" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/Day" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout_timer_hour"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:visibility="gone">
+
+                            <com.robinhood.ticker.TickerView
+                                android:id="@+id/tickerView_timer_hour"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="25sp"
+                                app:ticker_defaultCharacterList="number" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/Hour" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout_timer_minute"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:visibility="gone">
+
+                            <com.robinhood.ticker.TickerView
+                                android:id="@+id/tickerView_timer_minute"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="25sp"
+                                app:ticker_defaultCharacterList="number" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/Minute" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center">
+
+                            <com.robinhood.ticker.TickerView
+                                android:id="@+id/tickerView_timer_second"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="25sp"
+                                app:ticker_defaultCharacterList="number" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/Second" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/tv_fragment_myself_ranking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:drawableEnd="@drawable/ic_arrow_right_gray"
+                    android:gravity="start|center_vertical"
+                    android:padding="5dp"
+                    android:text="@string/RepairRankingAndStatistic"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_fragment_myself_processing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:drawableEnd="@drawable/ic_arrow_right_gray"
+                    android:gravity="start|center_vertical"
+                    android:padding="5dp"
+                    android:text="@string/Processing"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_fragment_myself_done"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:drawableEnd="@drawable/ic_arrow_right_gray"
+                    android:gravity="start|center_vertical"
+                    android:padding="5dp"
+                    android:text="@string/Done"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_fragment_myself_admin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:drawableEnd="@drawable/ic_arrow_right_gray"
+                    android:gravity="start|center_vertical"
+                    android:padding="5dp"
+                    android:text="@string/Admin"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_fragment_myself_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:drawableEnd="@drawable/ic_arrow_right_gray"
+                    android:gravity="start|center_vertical"
+                    android:padding="5dp"
+                    android:text="@string/Settings"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</jn.mjz.aiot.jnuetc.kotlin.view.custom.ThemedSwipeRefreshLayout>

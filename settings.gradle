@@ -1,0 +1,2 @@
+rootProject.name='JNUETC_KOTLIN'
+include ':app'

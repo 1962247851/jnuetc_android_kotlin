@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="8dp"
+    android:transitionName="taskCard"
+    app:cardCornerRadius="7dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout_item_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            tools:background="@drawable/background_task_view_state_new_left">
+
+            <TextView
+                android:id="@+id/tv_item_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:gravity="end" />
+
+            <TextView
+                android:id="@+id/tv_item_location_and_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/textViewPaddingStart"
+                android:paddingTop="2.5dp"
+                android:paddingEnd="@dimen/textViewPaddingEnd"
+                android:paddingBottom="2.5dp"
+                android:textAppearance="@style/MainTextAppearance"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="@string/LocationAndId" />
+
+            <TextView
+                android:id="@+id/tv_item_date_and_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_item_location_and_id"
+                android:paddingStart="@dimen/textViewPaddingStart"
+                android:paddingTop="2.5dp"
+                android:paddingEnd="@dimen/textViewPaddingEnd"
+                android:paddingBottom="2.5dp"
+                tools:text="@string/DateAndName" />
+
+            <TextView
+                android:id="@+id/tv_item_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_item_date_and_name"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:paddingStart="@dimen/textViewPaddingStart"
+                android:paddingTop="2.5dp"
+                android:paddingEnd="@dimen/textViewPaddingEnd"
+                android:paddingBottom="2.5dp"
+                tools:text="@string/Model" />
+
+            <com.lcodecore.extextview.ExpandTextView
+                android:id="@+id/etv_item_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_item_model"
+                android:background="?selectableItemBackground"
+                android:paddingStart="@dimen/textViewPaddingStart"
+                android:paddingTop="2.5dp"
+                android:paddingEnd="@dimen/textViewPaddingEnd"
+                android:paddingBottom="2.5dp"
+                app:arrowAlign="bottom"
+                app:maxCollapsedLines="3"
+                tools:text="故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情故障详情" />
+
+            <TextView
+                android:id="@+id/tv_item_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etv_item_message"
+                android:layout_alignParentEnd="true"
+                android:background="?selectableItemBackground"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:text="@string/Order"
+                android:textColor="@color/colorPrimary" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout_item_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etv_item_message">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2.5dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10dp"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/text_view_photo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:paddingTop="2.5dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="2.5dp"
+                        android:textColor="@android:color/white"
+                        tools:text="有图" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView_team_work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2.5dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="10dp"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/text_view_team_work"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:paddingTop="2.5dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="2.5dp"
+                        android:text="@string/TeamWork"
+                        android:textColor="@android:color/white" />
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView_long_time_no_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linearLayout_item_tags"
+                android:layout_alignParentStart="true"
+                android:layout_margin="2.5dp"
+                android:visibility="gone"
+                app:cardCornerRadius="10dp"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/text_view_long_time_no_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/Yellow"
+                    android:paddingStart="10dp"
+                    android:paddingTop="2.5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="2.5dp"
+                    android:textColor="@android:color/black" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_item_time_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linearLayout_item_tags"
+                android:layout_alignParentEnd="true"
+                android:paddingStart="0dp"
+                android:paddingTop="2.5dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="2.5dp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

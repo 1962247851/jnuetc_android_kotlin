@@ -1,0 +1,27 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        app:fragment="jn.mjz.aiot.jnuetc.kotlin.view.activity.settins.SettingsActivity$BootFragment"
+        app:iconSpaceReserved="false"
+        app:key="boot_header"
+        app:title="@string/BootTitle" />
+
+    <Preference
+        app:fragment="jn.mjz.aiot.jnuetc.kotlin.view.activity.settins.SettingsActivity$MainFragment"
+        app:iconSpaceReserved="false"
+        app:key="main_header"
+        app:title="@string/MainTitle" />
+
+    <Preference
+        app:fragment="jn.mjz.aiot.jnuetc.kotlin.view.activity.settins.SettingsActivity$MingJuFragment"
+        app:iconSpaceReserved="false"
+        app:key="ming_ju_header"
+        app:title="@string/MingJuTitle" />
+
+    <Preference
+        app:fragment="jn.mjz.aiot.jnuetc.kotlin.view.activity.settins.SettingsActivity$RankingFragment"
+        app:iconSpaceReserved="false"
+        app:key="ranking_header"
+        app:title="@string/RankingTitle" />
+
+</PreferenceScreen>

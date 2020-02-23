@@ -1,0 +1,17 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+        app:defaultValue="true"
+        app:key="show_ming_ju"
+        app:title="顶部标题栏子标题展示随机名句" />
+
+    <ListPreference
+        app:defaultValue="随机"
+        app:dependency="show_ming_ju"
+        app:entries="@array/ming_ju_topic_entries"
+        app:entryValues="@array/ming_ju_topic_entries"
+        app:key="ming_ju_topic"
+        app:title="名句话题"
+        app:useSimpleSummaryProvider="true" />
+
+</PreferenceScreen>

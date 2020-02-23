@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="user"
+            type="jn.mjz.aiot.jnuetc.kotlin.model.entity.User" />
+
+        <variable
+            name="repair"
+            type="Boolean" />
+
+        <variable
+            name="dayDP"
+            type="Boolean" />
+
+        <variable
+            name="register"
+            type="Boolean" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/actionbar"
+                app:subtitleTextAppearance="@style/subTitleAppearance"
+                app:title="@string/Admin" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView_admin_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center"
+                    android:text="@{user.haveAdministratorAccess()?@string/WelcomeAdministrator:@string/WelcomeNormalAdministrator}"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="25sp" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView_admin_push"
+                    visible="@{user.haveAdministratorAccess()}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:id="@+id/textView_admin_push_tip"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="@string/PushTitleHint"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/textView_admin_push_tip">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tiet_push_message"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/UpdateLogHint"
+                                android:maxLength="1000" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/til1">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tiet_push_url"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/DownloadUrlHint" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Button
+                            android:id="@+id/button_admin_push"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_confirm"
+                            android:text="@string/SendPush"
+                            android:textColor="@android:color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/til2" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView_admin_repair"
+                    visible="@{user.haveDeleteAccess()}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <Switch
+                            android:id="@+id/switch_repair"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:checked="@{register}"
+                            android:padding="5dp"
+                            android:text="@string/RepairSwitch"
+                            android:textSize="20sp" />
+
+                        <Button
+                            android:id="@+id/button_admin_export"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_confirm"
+                            android:text="@string/ExportDataToExcel"
+                            android:textAllCaps="false"
+                            android:textColor="@color/White" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView_admin_dayDP"
+                    visible="@{user.haveDeleteAccess()}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <Switch
+                            android:id="@+id/switch_admin_dayDP"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:checked="@{dayDP}"
+                            android:padding="5dp"
+                            android:text="@string/DayDPSwitch"
+                            android:textSize="20sp" />
+
+                        <Button
+                            android:id="@+id/button_admin_upload_DP"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/button_confirm"
+                            android:text="@string/UploadDayDP"
+                            android:textColor="@color/White" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView_admin_register"
+                    visible="@{user.haveAdministratorAccess()}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="5dp">
+
+                        <Switch
+                            android:id="@+id/switch_admin_register"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:checked="@{register}"
+                            android:padding="5dp"
+                            android:text="@string/RegisterSwitch"
+                            android:textSize="20sp" />
+
+                        <RelativeLayout
+                            android:id="@+id/relativeLayout_admin_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:paddingBottom="10dp">
+
+                            <Button
+                                android:id="@+id/button_admin_insert"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@id/til_admin_code"
+                                android:layout_alignParentEnd="true"
+                                android:background="@drawable/button_confirm"
+                                android:text="@string/Add"
+                                android:textColor="@color/White" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/til_admin_code"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_toStartOf="@+id/button_admin_insert"
+                                android:textColorHint="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/tidt_admin_code"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/NewCode"
+                                    android:inputType="number"
+                                    android:maxLength="4"
+                                    android:textColor="@color/MainText"
+                                    android:textIsSelectable="true"
+                                    android:textSize="20sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</layout>

@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+        app:defaultValue="true"
+        app:key="ranking_expand"
+        app:title="默认展开图表" />
+
+    <ListPreference
+        app:defaultValue="2"
+        app:entries="@array/ranking_order_date_show_type_entries"
+        app:entryValues="@array/ranking_order_date_show_type_values"
+        app:key="ranking_order_date_show_type"
+        app:title="接单日期展示方式"
+        app:useSimpleSummaryProvider="true" />
+
+</PreferenceScreen>

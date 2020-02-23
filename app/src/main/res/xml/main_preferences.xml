@@ -1,0 +1,48 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+
+        app:iconSpaceReserved="false"
+        app:title="我的界面" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="true"
+        app:key="show_reg_time"
+        app:summaryOff="隐藏我的界面的计时器"
+        app:summaryOn="在我的界面会显示一个计时器"
+        app:title="显示注册时间"
+        app:useSimpleSummaryProvider="true" />
+
+    <Preference
+        app:iconSpaceReserved="false"
+        app:title="左侧滑栏" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="true"
+        app:key="slide_with_start"
+        app:summaryOff="滑动侧滑栏时覆盖到内容上"
+        app:summaryOn="滑动侧滑栏时内容平移"
+        app:useSimpleSummaryProvider="true" />
+
+    <SwitchPreference
+        app:defaultValue="true"
+        app:key="show_host"
+        app:summaryOff="侧滑栏隐藏报修入口"
+        app:summaryOn="侧滑栏显示报修入口"
+        app:useSimpleSummaryProvider="true" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="true"
+        app:key="unlock"
+        app:summaryOff="在我的界面锁定侧滑栏"
+        app:summaryOn="在我的界面也可以打开侧滑栏"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        app:defaultValue="@string/DrawerShowText"
+        app:dependency="unlock"
+        app:key="show_text"
+        app:title="@string/DrawerShowTextTitle"
+        app:useSimpleSummaryProvider="true" />
+
+</PreferenceScreen>
