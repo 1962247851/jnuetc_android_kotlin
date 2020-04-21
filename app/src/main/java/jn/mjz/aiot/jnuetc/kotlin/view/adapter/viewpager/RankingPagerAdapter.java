@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
@@ -158,8 +159,8 @@ public class RankingPagerAdapter extends PagerAdapter {
         ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 800);
         pieChart.setLayoutParams(layoutParams1);
         pieChart.setUsePercentValues(true);
-        pieChart.setNoDataTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
-        pieChart.setEntryLabelColor(XFrame.getColor(R.color.leftSelectableTextColor));
+        pieChart.setNoDataTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
+        pieChart.setEntryLabelColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
         pieChart.setNoDataTextTypeface(Typeface.DEFAULT_BOLD);
         pieChart.setNoDataText("暂无数据可以统计喔~~~");
         pieChart.getLegend().setEnabled(false);
@@ -168,8 +169,8 @@ public class RankingPagerAdapter extends PagerAdapter {
             PieDataSet set = new PieDataSet(entries, label);
 
             //根据主题设置颜色
-            set.setValueTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
-            set.setValueLineColor(XFrame.getColor(R.color.leftSelectableTextColor));
+            set.setValueTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
+            set.setValueLineColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
 
             set.setColors(colors);
 
@@ -182,7 +183,7 @@ public class RankingPagerAdapter extends PagerAdapter {
                 pieChart.setExtraOffsets(10f, 5f, 10f, 5f);
                 pieChart.setDrawEntryLabels(false);
                 Legend legend = pieChart.getLegend();
-                legend.setTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
+                legend.setTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
                 legend.setEnabled(true);
                 legend.setOrientation(Legend.LegendOrientation.VERTICAL);
                 //顶部
@@ -226,7 +227,7 @@ public class RankingPagerAdapter extends PagerAdapter {
         BarChart barChart = new BarChart(context);
         ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 800);
         barChart.setLayoutParams(layoutParams1);
-        barChart.setNoDataTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
+        barChart.setNoDataTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
         barChart.setNoDataTextTypeface(Typeface.DEFAULT_BOLD);
         barChart.setNoDataText("暂无数据可以统计喔~~~");
         //是否绘制网格背景
@@ -247,7 +248,7 @@ public class RankingPagerAdapter extends PagerAdapter {
 
             //对Y轴进行设置
             YAxis yAxis = barChart.getAxisLeft();
-            yAxis.setTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
+            yAxis.setTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
             //设置最小间隔，防止当放大时，出现重复标签
             yAxis.setGranularity(1f);
             yAxis.setDrawAxisLine(true);
@@ -263,7 +264,7 @@ public class RankingPagerAdapter extends PagerAdapter {
 //        yl.setInverted(true);
 
             XAxis xAxis = barChart.getXAxis();
-            xAxis.setTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
+            xAxis.setTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
             //设置最小间隔，防止当放大时，出现重复标签
             xAxis.setGranularity(1f);
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -279,7 +280,7 @@ public class RankingPagerAdapter extends PagerAdapter {
             });
 
             BarDataSet set = new BarDataSet(entries, label);
-            set.setValueTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
+            set.setValueTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
             set.setColors(colors);
 
             BarData data = new BarData(set);
@@ -322,7 +323,7 @@ public class RankingPagerAdapter extends PagerAdapter {
         LineChart lineChart = new LineChart(context);
         ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 800);
         lineChart.setLayoutParams(layoutParams1);
-        lineChart.setNoDataTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
+        lineChart.setNoDataTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
         lineChart.setNoDataTextTypeface(Typeface.DEFAULT_BOLD);
         lineChart.setNoDataText("暂无数据可以统计喔~~~");
         //是否绘制网格背景
@@ -339,7 +340,7 @@ public class RankingPagerAdapter extends PagerAdapter {
         if (!entries.isEmpty()) {
             //对Y轴进行设置
             YAxis yAxis = lineChart.getAxisLeft();
-            yAxis.setTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
+            yAxis.setTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
             //设置最小间隔，防止当放大时，出现重复标签
             yAxis.setGranularity(1f);
             yAxis.setDrawAxisLine(true);
@@ -355,7 +356,7 @@ public class RankingPagerAdapter extends PagerAdapter {
 //        yl.setInverted(true);
 
             XAxis xAxis = lineChart.getXAxis();
-            xAxis.setTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
+            xAxis.setTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
             //设置最小间隔，防止当放大时，出现重复标签
             xAxis.setGranularity(1f);
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -377,7 +378,7 @@ public class RankingPagerAdapter extends PagerAdapter {
             });
 
             LineDataSet set = new LineDataSet(entries, label);
-            set.setValueTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
+            set.setValueTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
             set.setColors(colors);
 
             LineData data = new LineData(set);
@@ -420,7 +421,7 @@ public class RankingPagerAdapter extends PagerAdapter {
         LineChart lineChart = new LineChart(context);
         ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 800);
         lineChart.setLayoutParams(layoutParams1);
-        lineChart.setNoDataTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
+        lineChart.setNoDataTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
         lineChart.setNoDataTextTypeface(Typeface.DEFAULT_BOLD);
         lineChart.setNoDataText("暂无数据可以统计喔~~~");
         //是否绘制网格背景
@@ -433,7 +434,7 @@ public class RankingPagerAdapter extends PagerAdapter {
         lineChart.animateY(2500);
         //图例设置
         Legend legend = lineChart.getLegend();
-        legend.setTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
+        legend.setTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         //顶部
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
@@ -443,7 +444,7 @@ public class RankingPagerAdapter extends PagerAdapter {
         if (!entriesList.isEmpty()) {
             //对Y轴进行设置
             YAxis yAxis = lineChart.getAxisLeft();
-            yAxis.setTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
+            yAxis.setTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
             //设置最小间隔，防止当放大时，出现重复标签
             yAxis.setGranularity(1f);
             yAxis.setDrawAxisLine(true);
@@ -459,7 +460,7 @@ public class RankingPagerAdapter extends PagerAdapter {
 //        yl.setInverted(true);
 
             XAxis xAxis = lineChart.getXAxis();
-            xAxis.setTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
+            xAxis.setTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
             //设置最小间隔，防止当放大时，出现重复标签
             xAxis.setGranularity(1f);
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -483,7 +484,7 @@ public class RankingPagerAdapter extends PagerAdapter {
             for (int i = 0; i < entriesList.size(); i++) {
                 List<Entry> entries = entriesList.get(i);
                 LineDataSet set = new LineDataSet(entries, labels.get(i));
-                set.setValueTextColor(XFrame.getColor(R.color.leftSelectableTextColor));
+                set.setValueTextColor(ContextCompat.getColor(context,R.color.leftSelectableTextColor));
                 set.setColor(RankingPagerAdapter.DEFAULT_CHART_COLORS.get(i));
                 set.setCircleColor(RankingPagerAdapter.DEFAULT_CHART_COLORS.get(i));
                 set.setMode(LineDataSet.Mode.CUBIC_BEZIER);

@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#00BFA5</color>
-    <color name="colorPrimaryDark">#00796B</color>
-    <color name="colorAccent">#3385FF</color>
-
-    <color name="leftSelectableTextColor">@android:color/primary_text_dark</color>
+    <color name="leftSelectableTextColor">@android:color/white</color>
     <color name="WindowBackgroundColor">#303030</color>
     <color name="colorUnSelect">#AAAAAA</color>
-    <color name="colorGray">#666666</color>
-
-    <color name="MainText">@android:color/black</color>
 
     <color name="Green">#00bb00</color>
     <color name="White">#ffffff</color>
@@ -35,5 +28,4 @@
     <color name="ChartColor14">#E5ADF9</color>
     <color name="ChartColor15">#E96E94</color>
     <color name="ChartColor16">#C6FF00</color>
-
 </resources>

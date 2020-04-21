@@ -329,7 +329,7 @@ class AdminActivity : AbstractActivity(true) {
             } else if (requestCode == SELECT_PHOTO_FILE) {
                 LoadingDialog.with(this@AdminActivity).show()
                 val uris: List<Uri> = Matisse.obtainResult(data)
-                val file: File = FileUtil.uriToFile(uris[0], this)
+                val file: File = FileUtil.uriToFile(uris[0], this)!!
                 val fileName = DateUtil.getCurrentDate("yyyy-MM-dd").toString() + ".jpg"
                 FileUtil.uploadTipDp(fileName, file, object : HttpCallBack<Boolean>() {
                     override fun onSuccess(aBoolean: Boolean) {

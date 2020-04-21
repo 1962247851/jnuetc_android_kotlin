@@ -65,7 +65,7 @@
     <string name="LocalNorth">北区</string>
     <string name="LocalSouth">南区</string>
     <string name="github">github：</string>
-    <string name="githubAddress">https://github.com/1962247851/JNUETC</string>
+    <string name="githubAddress">https://github.com/1962247851/jnuetc_kotlin</string>
     <string name="FeedbackAddress">https://support.qq.com/product/72412</string>
     <string name="Search">搜索</string>
     <string name="SuggestionAndFeedback">建议与反馈</string>
@@ -168,4 +168,6 @@
     <string name="FirstOpenTipTitle">欢迎使用JNUETC（kotlin重构版）</string>
     <string name="FirstOpenTipMessage"><![CDATA[权限说明：\n读写设备上的照片及文件用于展示启动图片和报修单的故障图片、选择照片上传到服务器作为当日的启动图片\n直接拨打电话用于省去复制电话号码粘贴到拨号界面的过程，最后拨号还是需要手动触发的\n\n注意：\n在非MIUI平台下，如果安卓版本大于等于6.0，需要授予电话和存储权限，否则推送服务会注册失败，意味着不能及时收到通知。\n\n点击确定后开始请求授权]]></string>
     <string name="KOTLIN">kotlin重构版</string>
+    <string name="Download">下载</string>
+    <string name="Theme">主题</string>
 </resources>

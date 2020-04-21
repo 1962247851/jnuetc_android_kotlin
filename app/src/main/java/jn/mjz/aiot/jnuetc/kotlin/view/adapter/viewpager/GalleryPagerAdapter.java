@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bm.library.PhotoView;
@@ -17,7 +18,8 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.youth.xframe.XFrame;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -60,12 +62,19 @@ public class GalleryPagerAdapter extends PagerAdapter {
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             progressBar.setVisibility(View.GONE);
                             photoView.setOnClickListener(v -> i.onPhotoClick());
+                            photoView.setOnLongClickListener(new View.OnLongClickListener() {
+                                @Override
+                                public boolean onLongClick(View v) {
+                                    i.onPhotoLongClick(position);
+                                    return true;
+                                }
+                            });
                             return false;
                         }
 
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            photoView.setBackgroundColor(XFrame.getColor(R.color.WindowBackgroundColor));
+                            photoView.setBackgroundColor(ContextCompat.getColor(context, R.color.WindowBackgroundColor));
                             progressBar.setVisibility(View.GONE);
                             return false;
                         }
@@ -99,5 +108,7 @@ public class GalleryPagerAdapter extends PagerAdapter {
          * 点击图片
          */
         void onPhotoClick();
+
+        void onPhotoLongClick(@NotNull Integer position);
     }
 }

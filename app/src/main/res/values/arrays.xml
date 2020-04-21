@@ -183,4 +183,10 @@
         <item>接单成功后自动复制QQ号并且打开QQ</item>
     </string-array>
 
+    <string-array name="app_theme_entries">
+        <item>跟随系统</item>
+        <item>白天</item>
+        <item>夜间</item>
+    </string-array>
+
 </resources>

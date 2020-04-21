@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.youth.xframe.utils.log.XLog;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author qq1962247851
  * @date 2020/2/2 18:46
@@ -34,7 +36,10 @@ public class MyOnScrollListener extends RecyclerView.OnScrollListener {
 
     @Override
     public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-        if (newState != 0) {
+        if (newState == 0) {
+            iStateChangeListener.OnStopScroll();
+            XLog.d(TAG + "OnStopScroll");
+        } else {
             if (!recyclerView.canScrollVertically(-1) && !recyclerView.canScrollVertically(1)) {
                 if (currentState != STATE.FULL_ON_SCREEN) {
                     currentState = STATE.FULL_ON_SCREEN;
@@ -84,11 +89,16 @@ public class MyOnScrollListener extends RecyclerView.OnScrollListener {
         if (currentState != newState) {
             currentState = newState;
             iStateChangeListener.OnStateChange(currentState);
+            if (currentState == STATE.FULL_ON_SCREEN || currentState == STATE.ARRIVED_BOTTOM || currentState == STATE.ARRIVED_TOP) {
+                iStateChangeListener.OnStopScroll();
+            }
         }
         super.onScrolled(recyclerView, dx, dy);
     }
 
     public interface IStateChangeListener {
-        void OnStateChange(STATE state);
+        void OnStateChange(@NotNull STATE state);
+
+        void OnStopScroll();
     }
 }

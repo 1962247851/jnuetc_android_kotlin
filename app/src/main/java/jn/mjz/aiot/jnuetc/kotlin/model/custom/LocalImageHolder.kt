@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.core.content.ContextCompat
 import com.bigkoo.convenientbanner.holder.Holder
 import com.bm.library.PhotoView
 import com.bumptech.glide.Glide
@@ -40,7 +41,7 @@ class LocalImageHolder(itemView: View, private val context: Context) :
                     isFirstResource: Boolean
                 ): Boolean {
                     photoView.scaleType = ImageView.ScaleType.CENTER_INSIDE
-                    photoView.setBackgroundColor(XFrame.getColor(R.color.WindowBackgroundColor))
+                    photoView.setBackgroundColor(ContextCompat.getColor(context,R.color.WindowBackgroundColor))
                     progressBar.visibility = View.GONE
                     return false
                 }

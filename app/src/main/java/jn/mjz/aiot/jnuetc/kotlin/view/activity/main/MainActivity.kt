@@ -24,6 +24,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -128,25 +129,6 @@ class MainActivity : AbstractActivity(), SearchView.OnQueryTextListener, TaskAda
         //清空输入，并隐藏输入框
         searchView.setQuery("", false)
         searchView.isIconified = true
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onNewVersionFromCloud(newVersionFromCloud: NewVersionFromCloud) {
-        if (newVersionFromCloud.url != null) {
-            val dialog =
-                AlertDialog.Builder(this).setCancelable(false).setTitle("发现新版本")
-                    .setMessage(newVersionFromCloud.description).setPositiveButton("下载") { _, _ -> }
-                    .create()
-            dialog.show()
-            dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                startActivity(
-                    Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse(newVersionFromCloud.url)
-                    )
-                )
-            }
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -576,7 +558,7 @@ class MainActivity : AbstractActivity(), SearchView.OnQueryTextListener, TaskAda
                             override fun onSequenceFinish() {
                                 XToast.custom(
                                     "更多功能请自行探索，祝您使用愉快！",
-                                    XFrame.getColor(R.color.colorPrimary),
+                                    ContextCompat.getColor(this@MainActivity, R.color.colorPrimary),
                                     5000
                                 )
                             }
@@ -600,14 +582,20 @@ class MainActivity : AbstractActivity(), SearchView.OnQueryTextListener, TaskAda
     override fun initView() {
         recyclerView_main_search.layoutManager = WrapContentLinearLayoutManager(this)
         recyclerView_main_search.adapter = searchTaskAdapter
-        recyclerView_main_search.addOnScrollListener(MyOnScrollListener {
-            if (it == MyOnScrollListener.STATE.ARRIVED_TOP || it == MyOnScrollListener.STATE.FULL_ON_SCREEN || it == MyOnScrollListener.STATE.SCROLL_DOWN) {
-                fab_scroll_to_top.hide()
-            } else {
-                //到达底部或者往上滑才显示
-                fab_scroll_to_top.show()
+        recyclerView_main_search.addOnScrollListener(MyOnScrollListener(object :
+            MyOnScrollListener.IStateChangeListener {
+            override fun OnStateChange(state: MyOnScrollListener.STATE) {
+                if (state == MyOnScrollListener.STATE.ARRIVED_TOP || state == MyOnScrollListener.STATE.FULL_ON_SCREEN || state == MyOnScrollListener.STATE.SCROLL_DOWN) {
+                    fab_scroll_to_top.hide()
+                } else {
+                    //到达底部或者往上滑才显示
+                    fab_scroll_to_top.show()
+                }
             }
-        })
+
+            override fun OnStopScroll() {
+            }
+        }))
         fab_scroll_to_top.setOnClickListener { recyclerView_main_search.smoothScrollToPosition(0) }
         view_pager.adapter = mainPagerAdapter
         view_pager.isUserInputEnabled = false
@@ -660,9 +648,6 @@ class MainActivity : AbstractActivity(), SearchView.OnQueryTextListener, TaskAda
         initDrawerLayout()
         initDeleteAppBar()
         updateDrawerSelectedTitles()
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this)
-        }
     }
 
     private fun initDrawerLayout() {
@@ -817,13 +802,6 @@ class MainActivity : AbstractActivity(), SearchView.OnQueryTextListener, TaskAda
             }
             return@setOnMenuItemClickListener true
         }
-    }
-
-    override fun onDestroy() {
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this)
-        }
-        super.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

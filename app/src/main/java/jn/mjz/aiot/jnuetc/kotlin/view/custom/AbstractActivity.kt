@@ -1,11 +1,16 @@
 package jn.mjz.aiot.jnuetc.kotlin.view.custom
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.youth.xframe.XFrame
@@ -15,6 +20,12 @@ import com.youth.xframe.utils.permission.XPermission
 import com.youth.xframe.utils.statusbar.XStatusBar
 import jn.mjz.aiot.jnuetc.kotlin.R
 import jn.mjz.aiot.jnuetc.kotlin.model.application.App
+import jn.mjz.aiot.jnuetc.kotlin.model.entity.eventbus.AppThemeChange
+import jn.mjz.aiot.jnuetc.kotlin.model.entity.eventbus.NewVersionFromCloud
+import jn.mjz.aiot.jnuetc.kotlin.model.util.SharedPreferencesUtil
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 /**
@@ -31,7 +42,11 @@ abstract class AbstractActivity : AppCompatActivity, ICallback {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        loadTheme()
         super.onCreate(savedInstanceState)
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
         XActivityStack.getInstance().addActivity(this)
         if (layoutId > 0) {
             if (dataBandingEnable) {
@@ -51,7 +66,10 @@ abstract class AbstractActivity : AppCompatActivity, ICallback {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         if (toolbar != null) {
             setSupportActionBar(toolbar)
-            XStatusBar.setColorNoTranslucent(this, XFrame.getColor(R.color.colorPrimary))
+            XStatusBar.setColorNoTranslucent(
+                this,
+                ContextCompat.getColor(this, R.color.colorPrimary)
+            )
             App.initToolbar(toolbar, this)
         }
         return toolbar
@@ -97,8 +115,37 @@ abstract class AbstractActivity : AppCompatActivity, ICallback {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNewVersionFromCloud(newVersionFromCloud: NewVersionFromCloud) {
+        if (newVersionFromCloud.url != null) {
+            val dialog =
+                AlertDialog.Builder(this).setCancelable(false).setTitle("发现新版本")
+                    .setMessage(newVersionFromCloud.description).setPositiveButton("下载") { _, _ -> }
+                    .create()
+            dialog.show()
+            dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(newVersionFromCloud.url)
+                    )
+                )
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onAppThemeChange(appThemeChange: AppThemeChange) {
+        loadTheme()
+        finish()
+        startActivity(Intent(XFrame.getContext(), this.javaClass))
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
         XActivityStack.getInstance().finishActivity()
     }
 
@@ -127,6 +174,21 @@ abstract class AbstractActivity : AppCompatActivity, ICallback {
             }
         } else if (preFinish()) {
             super.onBackPressed()
+        }
+    }
+
+    private fun loadTheme() {
+        val themeArray = resources.getStringArray(R.array.app_theme_entries)
+        when (SharedPreferencesUtil.getSettingPreferences().getString("theme", themeArray[0])) {
+            themeArray[0] -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+            themeArray[1] -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            else -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
         }
     }
 

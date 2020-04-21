@@ -1,17 +1,22 @@
 package jn.mjz.aiot.jnuetc.kotlin.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
+import com.youth.xframe.utils.log.XLog
+import com.youth.xframe.widget.XToast
 import jn.mjz.aiot.jnuetc.kotlin.model.application.App
 import jn.mjz.aiot.jnuetc.kotlin.model.custom.ContextViewModel
 import jn.mjz.aiot.jnuetc.kotlin.model.entity.Data
+import jn.mjz.aiot.jnuetc.kotlin.model.entity.eventbus.Selecting
+import jn.mjz.aiot.jnuetc.kotlin.model.entity.eventbus.TaskCountChange
 import jn.mjz.aiot.jnuetc.kotlin.model.greendao.DataDao
 import jn.mjz.aiot.jnuetc.kotlin.model.util.GsonUtil
 import jn.mjz.aiot.jnuetc.kotlin.model.util.HttpUtil
 import jn.mjz.aiot.jnuetc.kotlin.model.util.SharedPreferencesUtil
 import jn.mjz.aiot.jnuetc.kotlin.view.adapter.recyclerview.TaskAdapter
 import jn.mjz.aiot.jnuetc.kotlin.view.fragment.task.TaskFragment
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.greendao.Property
+import org.greenrobot.greendao.query.WhereCondition
 
 /**
  * TaskViewModel
@@ -23,15 +28,12 @@ class TaskViewModel(context: Context) : ContextViewModel(context) {
 
     var state = TaskFragment.STATE_DEFAULT_VALUE
     val dataList = ArrayList<Data>()
-    val mldDataList = MutableLiveData<ArrayList<Data>>().apply {
-        value = ArrayList()
-    }
 
     lateinit var taskAdapter: TaskAdapter
 
-    fun loadFromDBAndSettings() {
+    fun loadFromDBAndSettings(limit: Int) {
         if (state != TaskFragment.STATE_DEFAULT_VALUE) {
-            mldDataList.value!!.clear()
+            val oldSize = dataList.size
             val list: List<Data>
             val drawerNorthString = SharedPreferencesUtil.getSettingPreferences()
                 .getString("drawer_north_$state", null)
@@ -71,42 +73,56 @@ class TaskViewModel(context: Context) : ContextViewModel(context) {
                     DataDao.Properties.State.eq(
                         state
                     ),
-                    DataDao.Properties.Local.`in`(locations)
-                ).orderDesc(timeProperty).list()
+                    DataDao.Properties.Local.`in`(locations),
+                    WhereCondition.PropertyCondition(
+                        DataDao.Properties.Repairer,
+                        " not like '%${App.getUser().userName}%'"
+                    )
+                ).orderDesc(timeProperty).limit(limit).list()
             } else {
                 App.daoSession.dataDao.queryBuilder().where(
                     DataDao.Properties.State.eq(
                         state
                     ),
-                    DataDao.Properties.Local.`in`(locations)
-                ).orderAsc(timeProperty).list()
+                    DataDao.Properties.Local.`in`(locations),
+                    WhereCondition.PropertyCondition(
+                        DataDao.Properties.Repairer,
+                        " not like '%${App.getUser().userName}%'"
+                    )
+                ).orderAsc(timeProperty).limit(limit).list()
             }
-            if (state != 0) {
-                val needToDelete = ArrayList<Data>()
-                list.forEach {
-                    if (it.repairer.contains(App.getUser().userName)) {
-                        needToDelete.add(it)
-                    }
+            val newSize = list.size
+            if (newSize == oldSize) {
+                XToast.info("没有更多数据了")
+                XLog.d("加载更多，没有更多数据了")
+            } else {
+                for (i in oldSize until newSize) {
+                    dataList.add(list[i])
+//                    if (i == 0) {
+//                        taskAdapter.notifyItemChanged(0)
+//                    } else {
+                    taskAdapter.notifyItemInserted(i)
+//                    }
                 }
-                list.removeAll(needToDelete)
+                EventBus.getDefault().post(TaskCountChange(state, newSize))
+                EventBus.getDefault().post(Selecting(taskAdapter.selectCnt, newSize))
+                XLog.d("加载更多，oldSize = $oldSize ,newSize = $newSize")
             }
-            mldDataList.value!!.addAll(
-                list
-            )
-            mldDataList.value = mldDataList.value
         }
-        taskAdapter.clearAllSelected()
     }
 
     fun refresh(callback: HttpUtil.HttpUtilCallBack<ArrayList<Data>>) {
         Data.queryAll(object : HttpUtil.HttpUtilCallBack<ArrayList<Data>> {
             override fun onResponse(result: ArrayList<Data>) {
-                loadFromDBAndSettings()
+                taskAdapter.clearAllSelected()
+                val oldSize = dataList.size
+                dataList.clear()
+                taskAdapter.notifyItemRangeRemoved(0, oldSize)
+                loadFromDBAndSettings(TaskFragment.PER_PAGE_COUNT)
                 callback.onResponse(result)
             }
 
             override fun onFailure(error: String) {
-                loadFromDBAndSettings()
                 callback.onFailure(error)
             }
         })

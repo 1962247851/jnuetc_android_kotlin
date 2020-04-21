@@ -13,7 +13,7 @@
         android:checkMarkTint="@color/colorAccent"
         android:gravity="center_vertical"
         android:padding="15dp"
-        android:text="@string/Location"
-        android:textAppearance="@style/MainTextAppearance" />
+        android:textColor="@color/colorGray"
+        android:text="@string/Location" />
 
 </LinearLayout>

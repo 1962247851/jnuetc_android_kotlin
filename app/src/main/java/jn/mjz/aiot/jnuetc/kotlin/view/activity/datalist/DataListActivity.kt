@@ -38,6 +38,7 @@ class DataListActivity : AbstractActivity(), TaskAdapter.ITaskListener {
 
     var dataList = ArrayList<Data>()
     var title = TITLE_DEFAULT_VALUE
+
     //如果是从我的界面进入则会用到
     var state = STATE_DEFAULT_VALUE
     private lateinit var myOnScrollListener: MyOnScrollListener
@@ -169,12 +170,17 @@ class DataListActivity : AbstractActivity(), TaskAdapter.ITaskListener {
         }
         taskAdapter = TaskAdapter(this, App.getUser().haveDeleteAccess(), dataList, this)
         myOnScrollListener = MyOnScrollListener(
-            MyOnScrollListener.IStateChangeListener {
-                if (it == MyOnScrollListener.STATE.ARRIVED_TOP || it == MyOnScrollListener.STATE.FULL_ON_SCREEN || it == MyOnScrollListener.STATE.SCROLL_DOWN) {
-                    fab_scroll_to_top.hide()
-                } else {
-                    //到达底部或者往上滑才显示
-                    fab_scroll_to_top.show()
+            object : MyOnScrollListener.IStateChangeListener {
+                override fun OnStateChange(state: MyOnScrollListener.STATE) {
+                    if (state == MyOnScrollListener.STATE.ARRIVED_TOP || state == MyOnScrollListener.STATE.FULL_ON_SCREEN || state == MyOnScrollListener.STATE.SCROLL_DOWN) {
+                        fab_scroll_to_top.hide()
+                    } else {
+                        //到达底部或者往上滑才显示
+                        fab_scroll_to_top.show()
+                    }
+                }
+
+                override fun OnStopScroll() {
                 }
             }
         )
@@ -189,9 +195,6 @@ class DataListActivity : AbstractActivity(), TaskAdapter.ITaskListener {
             recycler_view.smoothScrollToPosition(0)
         }
         initDeleteAppBar()
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this)
-        }
 //        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 //        toolbar.setPadding(0, App.getStatusHeight(this), 0, 0)
     }
@@ -234,13 +237,6 @@ class DataListActivity : AbstractActivity(), TaskAdapter.ITaskListener {
         outState.putString(TITLE_KEY, title)
         outState.putString(DATA_LIST_JSON_KEY, GsonUtil.getInstance().toJson(dataList))
         super.onSaveInstanceState(outState)
-    }
-
-    override fun onDestroy() {
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this)
-        }
-        super.onDestroy()
     }
 
     companion object {

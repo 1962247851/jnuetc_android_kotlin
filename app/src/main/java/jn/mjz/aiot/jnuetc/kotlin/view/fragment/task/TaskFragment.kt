@@ -9,7 +9,6 @@ import android.view.animation.Animation
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.youth.xframe.XFrame
 import com.youth.xframe.utils.XDensityUtils
@@ -71,10 +70,42 @@ class TaskFragment : AbstractFragment, TaskAdapter.ITaskListener {
         )
         refresh(false)
         myOnScrollListener = MyOnScrollListener(
-            MyOnScrollListener.IStateChangeListener {
-                if (it == MyOnScrollListener.STATE.SCROLL_DOWN) {
-                    if (fab_scroll_to_top.isOrWillBeShown) {
-                        fab_scroll_to_top.startAnimation(AnimationUtil.moveToViewBottomQuickly()
+            object : MyOnScrollListener.IStateChangeListener {
+                override fun OnStateChange(state: MyOnScrollListener.STATE) {
+                    if (state == MyOnScrollListener.STATE.SCROLL_DOWN) {
+                        if (fab_scroll_to_top.isOrWillBeShown) {
+                            fab_scroll_to_top.startAnimation(AnimationUtil.moveToViewBottomQuickly()
+                                .also { animation ->
+                                    //解决闪烁问题
+                                    animation.isFillEnabled = true
+                                    animation.setAnimationListener(object :
+                                        Animation.AnimationListener {
+                                        override fun onAnimationRepeat(animation: Animation?) {
+                                        }
+
+                                        override fun onAnimationEnd(animation: Animation?) {
+                                            /**由于在执行后view的位置不变，如需要写点击事件就得加上这些重新布置view**/
+                                            fabScrollToTopLayoutParams.bottomMargin =
+                                                fabScrollToTopMarginBottom - fab_scroll_to_top.height
+                                            fab_scroll_to_top.layoutParams =
+                                                fabScrollToTopLayoutParams
+                                        }
+
+                                        override fun onAnimationStart(animation: Animation?) {
+                                        }
+                                    })
+                                })
+                        } else {
+                            /**由于在执行后view的位置不变，如需要写点击事件就得加上这些重新布置view**/
+                            fabScrollToTopLayoutParams.bottomMargin =
+                                fabScrollToTopMarginBottom - fab_scroll_to_top.height
+                            fab_scroll_to_top.layoutParams = fabScrollToTopLayoutParams
+                        }
+                    } else if (state == MyOnScrollListener.STATE.SCROLL_UP) {
+                        /**由于在执行后view的位置不变，如需要写点击事件就得加上这些重新布置view**/
+                        fabScrollToTopLayoutParams.bottomMargin = fabScrollToTopMarginBottom
+                        fab_scroll_to_top.layoutParams = fabScrollToTopLayoutParams
+                        fab_scroll_to_top.startAnimation(AnimationUtil.moveToViewLocationFromBottomQuickly()
                             .also { animation ->
                                 //解决闪烁问题
                                 animation.isFillEnabled = true
@@ -84,51 +115,28 @@ class TaskFragment : AbstractFragment, TaskAdapter.ITaskListener {
                                     }
 
                                     override fun onAnimationEnd(animation: Animation?) {
-                                        /**由于在执行后view的位置不变，如需要写点击事件就得加上这些重新布置view**/
-                                        fabScrollToTopLayoutParams.bottomMargin =
-                                            fabScrollToTopMarginBottom - fab_scroll_to_top.height
-                                        fab_scroll_to_top.layoutParams = fabScrollToTopLayoutParams
                                     }
 
                                     override fun onAnimationStart(animation: Animation?) {
                                     }
                                 })
                             })
-                    } else {
-                        /**由于在执行后view的位置不变，如需要写点击事件就得加上这些重新布置view**/
-                        fabScrollToTopLayoutParams.bottomMargin =
-                            fabScrollToTopMarginBottom - fab_scroll_to_top.height
-                        fab_scroll_to_top.layoutParams = fabScrollToTopLayoutParams
                     }
-                } else if (it == MyOnScrollListener.STATE.SCROLL_UP) {
-                    /**由于在执行后view的位置不变，如需要写点击事件就得加上这些重新布置view**/
-                    fabScrollToTopLayoutParams.bottomMargin = fabScrollToTopMarginBottom
-                    fab_scroll_to_top.layoutParams = fabScrollToTopLayoutParams
-                    fab_scroll_to_top.startAnimation(AnimationUtil.moveToViewLocationFromBottomQuickly()
-                        .also { animation ->
-                            //解决闪烁问题
-                            animation.isFillEnabled = true
-                            animation.setAnimationListener(object :
-                                Animation.AnimationListener {
-                                override fun onAnimationRepeat(animation: Animation?) {
-                                }
-
-                                override fun onAnimationEnd(animation: Animation?) {
-                                }
-
-                                override fun onAnimationStart(animation: Animation?) {
-                                }
-                            })
-                        })
+                    if (!taskViewModel.taskAdapter.isSelectMode()) {
+                        EventBus.getDefault().post(RecyclerViewScrollStateChange(state))
+                    }
+                    if (state == MyOnScrollListener.STATE.ARRIVED_TOP || state == MyOnScrollListener.STATE.FULL_ON_SCREEN || state == MyOnScrollListener.STATE.SCROLL_DOWN) {
+                        fab_scroll_to_top.hide()
+                    } else {
+                        //到达底部或者往上滑才显示
+                        fab_scroll_to_top.show()
+                    }
+                    if (state == MyOnScrollListener.STATE.ARRIVED_BOTTOM) {
+                        taskViewModel.loadFromDBAndSettings(taskViewModel.dataList.size + PER_PAGE_COUNT)
+                    }
                 }
-                if (!taskViewModel.taskAdapter.isSelectMode()) {
-                    EventBus.getDefault().post(RecyclerViewScrollStateChange(it))
-                }
-                if (it == MyOnScrollListener.STATE.ARRIVED_TOP || it == MyOnScrollListener.STATE.FULL_ON_SCREEN || it == MyOnScrollListener.STATE.SCROLL_DOWN) {
-                    fab_scroll_to_top.hide()
-                } else {
-                    //到达底部或者往上滑才显示
-                    fab_scroll_to_top.show()
+
+                override fun OnStopScroll() {
                 }
             }
         )
@@ -161,24 +169,46 @@ class TaskFragment : AbstractFragment, TaskAdapter.ITaskListener {
         }
         recycler_view.adapter = taskViewModel.taskAdapter
         srl?.setOnRefreshListener { refresh(true) }
-        taskViewModel.mldDataList.observe(this, Observer {
-            val oldSize = taskViewModel.dataList.size
-            val size = it.size
-            EventBus.getDefault().post(
-                TaskCountChange(
-                    state,
-                    size
-                )
-            )
-            taskViewModel.dataList.clear()
-            taskViewModel.taskAdapter.notifyItemRangeRemoved(0, oldSize)
-            taskViewModel.dataList.addAll(it)
-            if (size != 0) {
-                taskViewModel.taskAdapter.notifyItemRangeInserted(0, size)
-            } else {
-                taskViewModel.taskAdapter.notifyItemChanged(0)
-            }
-        })
+//        taskViewModel.mldDataList.observe(this, Observer {
+//            //TODO 加载更多的时候更新UI，从当前list的size遍历到新的list的size，add后通知adapter更新
+//            val oldSize = taskViewModel.dataList.size
+//            val size = it.size
+//            EventBus.getDefault().post(
+//                TaskCountChange(
+//                    state,
+//                    size
+//                )
+//            )
+//            if (size > oldSize) {
+//                //加载更多
+//                if (size != 0) {
+//                    for (i in oldSize until size) {
+//                        taskViewModel.dataList.add(it[i])
+//                    }
+//                    taskViewModel.taskAdapter.notifyItemRangeInserted(oldSize, size - oldSize)
+//                } else {
+//                    taskViewModel.taskAdapter.notifyItemChanged(0)
+//                }
+//            } else if (size < oldSize) {
+//                //刷新
+//                taskViewModel.dataList.clear()
+//                taskViewModel.taskAdapter.notifyItemRangeRemoved(0, oldSize)
+//                taskViewModel.dataList.addAll(it)
+//                if (size != 0) {
+//                    taskViewModel.taskAdapter.notifyItemRangeInserted(0, size)
+//                } else {
+//                    taskViewModel.taskAdapter.notifyItemChanged(0)
+//                }
+//            }
+////            taskViewModel.dataList.clear()
+////            taskViewModel.taskAdapter.notifyItemRangeRemoved(0, oldSize)
+////            taskViewModel.dataList.addAll(it)
+////            if (size != 0) {
+////                taskViewModel.taskAdapter.notifyItemRangeInserted(0, size)
+////            } else {
+////                taskViewModel.taskAdapter.notifyItemChanged(0)
+////            }
+//        })
         recycler_view.addOnScrollListener(myOnScrollListener)
         fab_scroll_to_top.setOnClickListener {
             recycler_view.smoothScrollToPosition(0)
@@ -287,6 +317,7 @@ class TaskFragment : AbstractFragment, TaskAdapter.ITaskListener {
                     override fun onResponse(result1: Boolean) {
                         LoadingDialog.with(context!!).cancel()
 
+//用DiffUtil会有点小问题
 //                        val deleted = ArrayList<Data>().also {
 //                            it.addAll(taskViewModel.dataList)
 //                            it.removeAll(needToDelete)
@@ -315,10 +346,23 @@ class TaskFragment : AbstractFragment, TaskAdapter.ITaskListener {
 //                                return true
 //                            }
 //                        }).dispatchUpdatesTo(taskViewModel.taskAdapter)
-                        taskViewModel.dataList.removeAll(needToDelete)
-                        taskViewModel.mldDataList.value!!.clear()
-                        taskViewModel.mldDataList.value!!.addAll(taskViewModel.dataList)
-                        taskViewModel.mldDataList.value = taskViewModel.mldDataList.value
+
+                        for (data in needToDelete) {
+                            val indexOf = taskViewModel.dataList.indexOf(data)
+                            taskViewModel.dataList.removeAt(indexOf)
+                            taskViewModel.taskAdapter.notifyItemRemoved(indexOf)
+                            taskViewModel.taskAdapter.notifyItemRangeChanged(
+                                indexOf,
+                                taskViewModel.taskAdapter.itemCount - indexOf
+                            )
+                        }
+//                        val oldSize = taskViewModel.dataList.size
+//                        taskViewModel.taskAdapter.notifyItemRangeRemoved(0, oldSize)
+//                        taskViewModel.dataList.removeAll(needToDelete)
+//                        taskViewModel.taskAdapter.notifyItemRangeInserted(
+//                            0,
+//                            taskViewModel.dataList.size
+//                        )
                         taskViewModel.taskAdapter.clearAllSelected()
                         XToast.success(getString(R.string.DeleteSuccess))
                     }
@@ -420,6 +464,7 @@ class TaskFragment : AbstractFragment, TaskAdapter.ITaskListener {
         const val STATE_KEY = "state"
         const val STATE_DEFAULT_VALUE = 3
         const val VIEW_TASK = 0
+        const val PER_PAGE_COUNT = 10
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -513,7 +558,10 @@ class TaskFragment : AbstractFragment, TaskAdapter.ITaskListener {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onDrawerClose(drawerClose: DrawerClose) {
         if (drawerClose.whichState == state) {
-            taskViewModel.loadFromDBAndSettings()
+            val oldSize = taskViewModel.dataList.size
+            taskViewModel.dataList.clear()
+            taskViewModel.taskAdapter.notifyItemRangeRemoved(0, oldSize)
+            taskViewModel.loadFromDBAndSettings(PER_PAGE_COUNT)
         }
     }
 
@@ -522,8 +570,11 @@ class TaskFragment : AbstractFragment, TaskAdapter.ITaskListener {
         if (state == 2) {
             if (!taskFeedback.data.repairer.contains(App.getUser().userName)) {
                 taskViewModel.dataList.add(0, taskFeedback.data)
-                taskViewModel.mldDataList.value =
-                    ArrayList<Data>().also { it.addAll(taskViewModel.dataList) }
+                taskViewModel.taskAdapter.notifyItemInserted(0)
+                taskViewModel.taskAdapter.notifyItemRangeChanged(
+                    0,
+                    taskViewModel.taskAdapter.itemCount
+                )
             }
         }
     }

@@ -1,11 +1,10 @@
 package jn.mjz.aiot.jnuetc.kotlin.model.service
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
 import com.xiaomi.mipush.sdk.*
-import com.youth.xframe.common.XActivityStack
+import com.youth.xframe.XFrame
 import com.youth.xframe.utils.XAppUtils
 import com.youth.xframe.utils.log.XLog
 import jn.mjz.aiot.jnuetc.kotlin.model.application.App
@@ -16,7 +15,6 @@ import jn.mjz.aiot.jnuetc.kotlin.model.entity.eventbus.NewDataFromCloud
 import jn.mjz.aiot.jnuetc.kotlin.model.entity.eventbus.NewVersionFromCloud
 import jn.mjz.aiot.jnuetc.kotlin.model.util.GsonUtil
 import jn.mjz.aiot.jnuetc.kotlin.view.activity.detail.DetailsActivity
-import jn.mjz.aiot.jnuetc.kotlin.view.activity.main.MainActivity
 import jn.mjz.aiot.jnuetc.kotlin.view.fragment.datachangelog.DataChangeLogFragment.Companion.sortLogByTimeDesc
 import org.greenrobot.eventbus.EventBus
 
@@ -63,30 +61,28 @@ class BroadcastReceiver : PushMessageReceiver() {
         context: Context,
         message: MiPushMessage
     ) {
-        val intent = Intent(context, DetailsActivity::class.java)
-        val intentMain = Intent(context, MainActivity::class.java)
         val data: Data = GsonUtil.getInstance().fromJson(message.content, Data::class.java)
         val sorted = sortLogByTimeDesc(data.dataChangeLogs)
         data.dataChangeLogs.clear()
         data.dataChangeLogs.addAll(sorted)
-        App.daoSession.dataDao.insertOrReplace(data)
-        intent.putExtra(DetailsActivity.ID_KEY, data.id)
-        if (context !is Activity) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            intentMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
+        var intent: Intent
+        var currentContext: Context
         try {
-            if (XActivityStack.getInstance() == null || XActivityStack.getInstance().findActivity(
-                    MainActivity::class.java
-                ) == null
-            ) {
-                context.startActivities(arrayOf(intentMain, intent))
-            } else {
-                context.startActivity(intent)
-            }
-        } catch (e: Exception) {
-            context.startActivities(arrayOf(intentMain, intent))
+            currentContext = XFrame.getContext()
+            intent = Intent(currentContext, DetailsActivity::class.java).putExtra(
+                DetailsActivity.ID_KEY,
+                data.id
+            ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        } catch (e: NullPointerException) {
+            XLog.d("XFrame.getContext() == null")
+            currentContext = context
+            intent =
+                Intent(
+                    currentContext,
+                    DetailsActivity::class.java
+                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
+        currentContext.startActivity(intent)
         if (!TextUtils.isEmpty(message.topic)) {
             mTopic = message.topic
         } else if (!TextUtils.isEmpty(message.alias)) {

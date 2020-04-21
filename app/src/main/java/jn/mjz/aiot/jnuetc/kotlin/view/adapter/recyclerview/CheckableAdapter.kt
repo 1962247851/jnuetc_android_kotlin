@@ -54,6 +54,7 @@ class CheckableAdapter(
         payloads: MutableList<Any>
     ) {
         if (payloads.isNotEmpty()) {
+//            holder.itemView.checkedTextView_item.setTextColor(ContextCompat.getColor(XFrame.getContext(),R.color.leftSelectableTextColor))
             holder.itemView.checkedTextView_item.isChecked =
                 booleanArray[holder.itemView.checkedTextView_item.tag as Int]
         } else super.onBindViewHolder(holder, position, payloads)

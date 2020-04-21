@@ -6,7 +6,9 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.youth.xframe.widget.XToast
 import jn.mjz.aiot.jnuetc.kotlin.R
+import jn.mjz.aiot.jnuetc.kotlin.model.entity.eventbus.AppThemeChange
 import jn.mjz.aiot.jnuetc.kotlin.view.custom.AbstractActivity
+import org.greenrobot.eventbus.EventBus
 
 
 private const val TITLE_TAG = "settingsActivityTitle"
@@ -91,6 +93,16 @@ class SettingsActivity : AbstractActivity(),
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             preferenceManager.sharedPreferencesName = sharedPreferencesName
             setPreferencesFromResource(R.xml.header_preferences, rootKey)
+        }
+
+        override fun onPreferenceTreeClick(preference: Preference?): Boolean {
+            if (preference?.title == "主题") {
+                preference.setOnPreferenceChangeListener { _, _ ->
+                    EventBus.getDefault().post(AppThemeChange())
+                    return@setOnPreferenceChangeListener true
+                }
+            }
+            return super.onPreferenceTreeClick(preference)
         }
     }
 

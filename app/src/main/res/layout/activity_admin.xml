@@ -258,7 +258,6 @@
                                     android:hint="@string/NewCode"
                                     android:inputType="number"
                                     android:maxLength="4"
-                                    android:textColor="@color/MainText"
                                     android:textIsSelectable="true"
                                     android:textSize="20sp" />
 

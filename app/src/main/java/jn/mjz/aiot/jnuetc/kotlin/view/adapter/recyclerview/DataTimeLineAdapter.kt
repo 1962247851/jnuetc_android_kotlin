@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.youth.xframe.XFrame
 import com.youth.xframe.utils.XDateUtils
@@ -51,7 +52,7 @@ class DataTimeLineAdapter(private val context: Context, var data: Data) :
                     holder.itemView.textView_item_state.text = "待处理"
                     holder.itemView.imageView_item_state.background =
                         XFrame.getDrawable(R.drawable.ic_done_accent)
-                    holder.itemView.viewBottom.setBackgroundColor(XFrame.getColor(R.color.colorAccent))
+                    holder.itemView.viewBottom.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
                     holder.itemView.textView_item_content.text = "报修单创建，等待接单"
                     holder.itemView.textView_item_time.text = XDateUtils.millis2String(data.date)
                 }
@@ -61,7 +62,7 @@ class DataTimeLineAdapter(private val context: Context, var data: Data) :
                     holder.itemView.textView_item_state.text = "处理中"
                     holder.itemView.imageView_item_state.background =
                         XFrame.getDrawable(R.drawable.ic_more_gray)
-                    holder.itemView.viewTop.setBackgroundColor(XFrame.getColor(R.color.colorAccent))
+                    holder.itemView.viewTop.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
                     holder.itemView.viewBottom.setBackgroundColor(XFrame.getColor(R.color.colorGray))
                     holder.itemView.textView_item_content.text = ""
                     holder.itemView.textView_item_time.text = ""
@@ -86,7 +87,7 @@ class DataTimeLineAdapter(private val context: Context, var data: Data) :
                     holder.itemView.textView_item_state.text = "待处理"
                     holder.itemView.imageView_item_state.background =
                         XFrame.getDrawable(R.drawable.ic_done_accent)
-                    holder.itemView.viewBottom.setBackgroundColor(XFrame.getColor(R.color.colorAccent))
+                    holder.itemView.viewBottom.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
                     holder.itemView.textView_item_content.text = "报修单创建，等待接单"
                     holder.itemView.textView_item_time.text = XDateUtils.millis2String(data.date)
                 }
@@ -96,8 +97,8 @@ class DataTimeLineAdapter(private val context: Context, var data: Data) :
                     holder.itemView.textView_item_state.text = "处理中"
                     holder.itemView.imageView_item_state.background =
                         XFrame.getDrawable(R.drawable.ic_done_accent)
-                    holder.itemView.viewTop.setBackgroundColor(XFrame.getColor(R.color.colorAccent))
-                    holder.itemView.viewBottom.setBackgroundColor(XFrame.getColor(R.color.colorAccent))
+                    holder.itemView.viewTop.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                    holder.itemView.viewBottom.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
                     holder.itemView.textView_item_content.text = data.repairer + "正在处理"
                     holder.itemView.textView_item_time.text =
                         XDateUtils.millis2String(data.orderDate)
@@ -108,7 +109,7 @@ class DataTimeLineAdapter(private val context: Context, var data: Data) :
                     holder.itemView.textView_item_state.text = "已维修"
                     holder.itemView.imageView_item_state.background =
                         XFrame.getDrawable(R.drawable.ic_more_gray)
-                    holder.itemView.viewTop.setBackgroundColor(XFrame.getColor(R.color.colorAccent))
+                    holder.itemView.viewTop.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
                     holder.itemView.textView_item_content.text = ""
                     holder.itemView.textView_item_time.text = ""
                 }
@@ -122,7 +123,7 @@ class DataTimeLineAdapter(private val context: Context, var data: Data) :
                     holder.itemView.textView_item_state.text = "待处理"
                     holder.itemView.imageView_item_state.background =
                         XFrame.getDrawable(R.drawable.ic_done_accent)
-                    holder.itemView.viewBottom.setBackgroundColor(XFrame.getColor(R.color.colorAccent))
+                    holder.itemView.viewBottom.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
                     holder.itemView.textView_item_content.text = "报修单创建，等待接单"
                     holder.itemView.textView_item_time.text = XDateUtils.millis2String(data.date)
                 }
@@ -132,8 +133,8 @@ class DataTimeLineAdapter(private val context: Context, var data: Data) :
                     holder.itemView.textView_item_state.text = "处理中"
                     holder.itemView.imageView_item_state.background =
                         XFrame.getDrawable(R.drawable.ic_done_accent)
-                    holder.itemView.viewTop.setBackgroundColor(XFrame.getColor(R.color.colorAccent))
-                    holder.itemView.viewBottom.setBackgroundColor(XFrame.getColor(R.color.colorAccent))
+                    holder.itemView.viewTop.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                    holder.itemView.viewBottom.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
                     holder.itemView.textView_item_content.text = data.repairer + "正在处理"
                     holder.itemView.textView_item_time.text =
                         XDateUtils.millis2String(data.orderDate)
@@ -144,7 +145,7 @@ class DataTimeLineAdapter(private val context: Context, var data: Data) :
                     holder.itemView.textView_item_state.text = "已维修"
                     holder.itemView.imageView_item_state.background =
                         XFrame.getDrawable(R.drawable.ic_done_accent)
-                    holder.itemView.viewTop.setBackgroundColor(XFrame.getColor(R.color.colorAccent))
+                    holder.itemView.viewTop.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
                     holder.itemView.textView_item_content.text = data.repairer + "已完成维修"
                     holder.itemView.textView_item_time.text =
                         XDateUtils.millis2String(data.repairDate)

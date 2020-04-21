@@ -12,8 +12,8 @@ android {
         applicationId "jn.mjz.aiot.jnuetc.kotlin"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 21
-        versionName "3.0.5"
+        versionCode 22
+        versionName "3.0.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

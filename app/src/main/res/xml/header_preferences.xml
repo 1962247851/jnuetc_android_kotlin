@@ -24,4 +24,13 @@
         app:key="ranking_header"
         app:title="@string/RankingTitle" />
 
+    <ListPreference
+        app:defaultValue="跟随系统"
+        app:entries="@array/app_theme_entries"
+        app:entryValues="@array/app_theme_entries"
+        app:iconSpaceReserved="false"
+        app:key="theme"
+        app:title="@string/Theme"
+        app:useSimpleSummaryProvider="true" />
+
 </PreferenceScreen>

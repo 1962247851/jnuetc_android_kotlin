@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.youth.xframe.XFrame
@@ -35,7 +36,7 @@ class TaskAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private var isSelectMode = false
     private var enableSelect = false
     private val booleanArray = SparseBooleanArray()
-    private var selectCnt = 0
+    var selectCnt = 0
 
     companion object {
         /**
@@ -208,9 +209,9 @@ class TaskAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     )}"
             }
             2 -> {
-                holder.itemView.text_view_photo.setBackgroundColor(XFrame.getColor(R.color.colorPrimary))
+                holder.itemView.text_view_photo.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 holder.itemView.text_view_photo.setTextColor(XFrame.getColor(android.R.color.white))
-                holder.itemView.text_view_team_work.setBackgroundColor(XFrame.getColor(R.color.colorPrimary))
+                holder.itemView.text_view_team_work.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 holder.itemView.tv_item_confirm.visibility = View.GONE
                 holder.itemView.tv_item_time_info.visibility = View.VISIBLE
                 holder.itemView.relativeLayout_item_state.setBackgroundResource(R.drawable.background_task_view_state_done_left)

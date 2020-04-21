@@ -58,9 +58,10 @@ class App : XApplication() {
     }
 
     companion object {
+        const val REQUEST_EXTERNAL_STROGE = 123
         const val DB_NAME = "JNUETC_KOTLIN.db"
         private const val TAG = "App"
-        const val DEBUG_MODE = false
+        const val DEBUG_MODE = true
         lateinit var daoSession: DaoSession
         /**
          * 获取当前user
