@@ -7,9 +7,12 @@ import android.os.Bundle
 import android.util.SparseBooleanArray
 import android.view.Menu
 import android.view.View
+import android.view.animation.Animation
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import com.youth.xframe.utils.log.XLog
+import com.youth.xframe.utils.statusbar.XStatusBar
 import com.youth.xframe.widget.XToast
 import jn.mjz.aiot.jnuetc.kotlin.R
 import jn.mjz.aiot.jnuetc.kotlin.model.application.App
@@ -355,12 +358,31 @@ class DataListActivity : AbstractActivity(), TaskAdapter.ITaskListener {
     private fun hideDeleteAppBar() {
         if (appbar_layout_delete.visibility != View.GONE) {
             appbar_layout_delete.visibility = View.GONE
-            appbar_layout_delete.startAnimation(AnimationUtil.moveToViewTop())
+            val moveToViewTop = AnimationUtil.moveToViewTop()
+            moveToViewTop.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationRepeat(animation: Animation?) {
+                }
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    XStatusBar.setColorNoTranslucent(
+                        this@DataListActivity,
+                        ContextCompat.getColor(this@DataListActivity, R.color.colorPrimary)
+                    )
+                }
+
+                override fun onAnimationStart(animation: Animation?) {
+                }
+            })
+            appbar_layout_delete.startAnimation(moveToViewTop)
         }
     }
 
     private fun showDeleteAppBar() {
         if (appbar_layout_delete.visibility != View.VISIBLE) {
+            XStatusBar.setColorNoTranslucent(
+                this,
+                ContextCompat.getColor(this, R.color.colorAccent)
+            )
             appbar_layout_delete.visibility = View.VISIBLE
             appbar_layout_delete.startAnimation(AnimationUtil.moveToViewLocationFromTop())
         }
